@@ -1,0 +1,26 @@
+#!/usr/bin/ruby
+
+require './zip_parser'
+
+# Purpose is to be user-friendly for the Customer Success Team
+# User will run the script in Terminal and enter the filename
+# # The script will check if all zipcodes are 5 digits.
+# # The desired output is either 'All zips are 5 digits.." or "Some zips aren't
+# # 5 digits..."
+#
+
+# Get the filename
+puts "Please type the file name below."
+print ">" 
+file_name = $stdin.gets.chomp or raise "Please try againn, and ensure you've typed the name correctly."
+
+parser = ZipParser.new(file_name)
+
+if parser.ready_for_prod_support?
+  puts "All Zip Codes are 5 digits. Ready for Prodcution Support."
+else
+  puts "The following Zip Codes were invalid:"
+  parser.bad_zips_by_row.each do |row_number, zipcode|
+    puts "On row #{row_number}, '#{zipcode}' was invalid."
+  end
+end
